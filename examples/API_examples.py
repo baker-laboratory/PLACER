@@ -17,6 +17,8 @@ import PLACER
 ## Creating an instance of PLACER and loading the model
 placer = PLACER.PLACER()
 
+# add dump_output
+placer.dump_output = PLACER.protocol.dump_output
 
 """
 PREDICTION TESTS WITH NATIVE LIGANDS
