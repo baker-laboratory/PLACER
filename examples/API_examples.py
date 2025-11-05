@@ -52,8 +52,10 @@ print("""
 ################################
 """)
 
-## This works becaus CIF parser handles ligand parsing differently
+## This works because CIF parser handles ligand parsing differently
 cif_file = f"{DIR}/inputs/3rgk.cif"
+ODIR = "example_out_API/outputs_myoglobin"
+os.makedirs(ODIR, exist_ok=True)
 
 pl_inp = PLACER.PLACERinput()
 pl_inp.cif(cif_file)
@@ -61,7 +63,7 @@ pl_inp.name(os.path.basename(cif_file).replace(".cif", ""))
 pl_inp.skip_ligands(["HOH", "SO4"])
 pl_inp.ligand_reference({"HEM": "CCD"})
 outputs_Mb_cif = placer.run(pl_inp, 10)
-
+PLACER.protocol.dump_output(outputs_Mb_cif, f"{ODIR}/{pl_inp.name()}")
 
 
 
@@ -74,6 +76,8 @@ print("""
 """)
 
 cif_file = f"{DIR}/inputs/4dtz.cif"
+ODIR = "example_out_API/outputs_dopa"
+os.makedirs(ODIR, exist_ok=True)
 
 pl_inp = PLACER.PLACERinput()
 pl_inp.cif(cif_file)
@@ -82,7 +86,7 @@ pl_inp.name(os.path.basename(cif_file).replace(".cif", ""))
 pl_inp.predict_ligand([("D", "LDP", 501)])
 pl_inp.ligand_reference({"HEM": "CCD", "LDP": "CCD"})
 outputs_dopa = placer.run(pl_inp, 10)
-
+PLACER.protocol.dump_output(outputs_dopa, f"{ODIR}/{pl_inp.name()}")
 
 
 
@@ -100,13 +104,15 @@ print("""
 """)
 
 pdbfile = f"{DIR}/inputs/dnHEM1.pdb"
+ODIR = "example_out_API/outputs_denovo"
+os.makedirs(ODIR, exist_ok=True)
 
 pl_inp = PLACER.PLACERinput()
 pl_inp.pdb(pdbfile)
 pl_inp.name(os.path.basename(pdbfile).replace(".pdb", ""))
 pl_inp.ligand_reference({"HEM": f"{DIR}/ligands/HEM.mol2"})
 outputs_denovo = placer.run(pl_inp, 10)
-
+PLACER.protocol.dump_output(outputs_denovo, f"{ODIR}/{pl_inp.name()}")
 
 
 
@@ -123,6 +129,7 @@ pdbfile = f"{DIR}/inputs/dnHEM1.pdb"
 pdbstr = open(pdbfile, "r").read()
 
 ODIR = "example_out_API/outputs_denovo2"
+os.makedirs(ODIR, exist_ok=True)
 
 inp_dict = {"ligand_reference": {"HEM": f"{DIR}/ligands/HEM.mol2"},
             "name": os.path.basename(pdbfile).replace(".pdb", ""),
@@ -137,7 +144,7 @@ outputs_denovo2 = PLACER.utils.rank_outputs(outputs_denovo2, "prmsd")
 
 os.makedirs(ODIR, exist_ok=True)
 print(f"Writing outputs to {ODIR}")
-placer.dump_output(outputs_denovo2, f"{ODIR}/{pl_inp.name()}")
+PLACER.protocol.dump_output(outputs_denovo2, f"{ODIR}/{pl_inp.name()}")
 
 df = pd.DataFrame.from_dict({k: [outputs_denovo2[n][k] for n in outputs_denovo2] for k in outputs_denovo2[0].keys() if k not in ["item", "model"]})
 
@@ -152,8 +159,9 @@ print("""
 ##############################################
 """)
 
-ODIR = "example_out_API/outputs_denovo_bond"
 pdbfile = f"{DIR}/inputs/dnHEM1.pdb"
+ODIR = "example_out_API/outputs_denovo_bond"
+os.makedirs(ODIR, exist_ok=True)
 
 pl_inp = PLACER.PLACERinput()
 pl_inp.pdb(pdbfile)
@@ -164,7 +172,7 @@ outputs_denovo_bond = placer.run(pl_inp, 50)
 
 os.makedirs(ODIR, exist_ok=True)
 print(f"Writing outputs to {ODIR}")
-placer.dump_output(outputs_denovo_bond, f"{ODIR}/{pl_inp.name()}", rerank="prmsd")
+PLACER.protocol.dump_output(outputs_denovo_bond, f"{ODIR}/{pl_inp.name()}", rerank="prmsd")
 
 
 
@@ -178,6 +186,7 @@ print("""
 
 pdbfile = f"{DIR}/inputs/dnHEM1.pdb"
 ODIR = "example_out_API/outputs_mutate"
+os.makedirs(ODIR, exist_ok=True)
 
 pl_inp = PLACER.PLACERinput()
 pl_inp.pdb(pdbfile)
@@ -188,7 +197,7 @@ outputs_mutate = placer.run(pl_inp, 10)
 
 os.makedirs(ODIR, exist_ok=True)
 print(f"Writing outputs to {ODIR}")
-placer.dump_output(outputs_mutate, f"{ODIR}/{pl_inp.name()}", rerank="prmsd")
+PLACER.protocol.dump_output(outputs_mutate, f"{ODIR}/{pl_inp.name()}", rerank="prmsd")
 
 
 
@@ -204,6 +213,7 @@ print("""
 
 pdbfile = f"{DIR}/inputs/denovo_SER_hydrolase.pdb"
 ODIR = "example_out_API/outputs_SER"
+os.makedirs(ODIR, exist_ok=True)
 
 pl_inp = PLACER.PLACERinput()
 pl_inp.pdb(pdbfile)
@@ -213,7 +223,7 @@ outputs_SER = placer.run(pl_inp, 10)
 
 os.makedirs(ODIR, exist_ok=True)
 print(f"Writing outputs to {ODIR}")
-placer.dump_output(outputs_SER, f"{ODIR}/{pl_inp.name()}", rerank="prmsd")
+PLACER.protocol.dump_output(outputs_SER, f"{ODIR}/{pl_inp.name()}", rerank="prmsd")
 
 
 
@@ -227,6 +237,7 @@ print("""
 
 pdbfile = f"{DIR}/inputs/denovo_SER_hydrolase.pdb"
 ODIR = "example_out_API/outputs_mutate_SER"
+os.makedirs(ODIR, exist_ok=True)
 
 residue_75I = json.load(open("ligands/75I.json", "r"))
 
@@ -240,7 +251,7 @@ outputs_mutate_SER = placer.run(pl_inp, 10)
 
 os.makedirs(ODIR, exist_ok=True)
 print(f"Writing outputs to {ODIR}")
-placer.dump_output(outputs_mutate_SER, f"{ODIR}/{pl_inp.name()}", rerank="prmsd")
+PLACER.protocol.dump_output(outputs_mutate_SER, f"{ODIR}/{pl_inp.name()}", rerank="prmsd")
 
 
 
@@ -255,6 +266,7 @@ print("""
 pdbfile = f"{DIR}/inputs/dnHEM1.pdb"
 
 ODIR = "example_out_API/outputs_denovo_points"
+os.makedirs(ODIR, exist_ok=True)
 
 pl_inp = PLACER.PLACERinput()
 pl_inp.pdb(pdbfile)
@@ -276,7 +288,7 @@ outputs_denovo_points = PLACER.utils.rank_outputs(outputs_denovo_points, "prmsd"
 
 os.makedirs(ODIR, exist_ok=True)
 print(f"Writing outputs to {ODIR}")
-placer.dump_output(outputs_denovo_points, f"{ODIR}/{pl_inp.name()}")
+PLACER.protocol.dump_output(outputs_denovo_points, f"{ODIR}/{pl_inp.name()}")
 
 df = pd.DataFrame.from_dict({k: [outputs_denovo_points[n][k] for n in outputs_denovo_points] for k in outputs_denovo_points[0].keys() if k not in ["item", "model"]})
 
