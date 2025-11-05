@@ -107,7 +107,7 @@ def make_topk_graph(xyz  : torch.Tensor,
     cond = dist_mask&mask
     i,j = torch.where(cond.fill_diagonal_(False)) # self-edges are deleted here
 
-    # dgl not supported on MPS. Move tebsors to CPU if device is MPS
+    # dgl not supported on MPS. Move tensors to CPU if device is MPS
     if xyz.is_mps:
         i = i.to("cpu")
         j = j.to("cpu")

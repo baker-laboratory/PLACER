@@ -2,6 +2,7 @@ name: placer
 channels:
   - pytorch
   - conda-forge
+  - nodefaults
 dependencies:
   - python=3.10
   - pytorch::pytorch=2.3.0
@@ -20,10 +21,10 @@ dependencies:
   - jupyterlab
   - notebook
   - pip:
-    - dgl==2.2.0
+    - dgl
     - pydantic
     - torchdata==0.9.0
-    - nvtx-mock @ git+https://github.com/YaoYinYing/nvtx-mock
+    - nvtx-mock
     - nvtx
     - se3-transformer @ git+https://github.com/YaoYinYing/SE3Transformer@rfdiffusion-mps-test
     - dllogger @ git+https://github.com/NVIDIA/dllogger#egg=dllogger
