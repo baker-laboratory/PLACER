@@ -107,8 +107,16 @@ def make_topk_graph(xyz  : torch.Tensor,
     cond = dist_mask&mask
     i,j = torch.where(cond.fill_diagonal_(False)) # self-edges are deleted here
 
-    G = dgl.graph((i, j), num_nodes=L).to(device)
-    G.edata['rel_pos'] = (xyz[j] - xyz[i]).detach() # no gradients through basis functions
+    # dgl not supported on MPS. Move tebsors to CPU if device is MPS
+    if xyz.is_mps:
+        i = i.to("cpu")
+        j = j.to("cpu")
+        xyz_cpu = xyz.to("cpu")
+        G = dgl.graph((i, j), num_nodes=L).to("cpu")
+        G.edata['rel_pos'] = (xyz_cpu[j] - xyz_cpu[i]).detach()
+    else:
+        G = dgl.graph((i, j), num_nodes=L).to(device)
+        G.edata['rel_pos'] = (xyz[j] - xyz[i]).detach() # no gradients through basis functions
 
     return G
 
@@ -331,6 +339,11 @@ class PLACER_network(nn.Module):
                     edges = self.pair_to_edge(edges)[...,None]
                     state,dx = se3(G, nodes, l1, edges)
 
+            # for MPS, dgl operations are moved to the CPU due to the lack of MPS support
+            # thus, state and dx are currently on the CPU. Move them back to MPS
+            if X.is_mps:
+                state = state.to('mps')
+                dx = dx.to('mps')
 
             # update coordinates
             X_new = Xs[-1].detach() + dx[:,0]/self.l1_scale

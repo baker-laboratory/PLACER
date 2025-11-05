@@ -1,0 +1,7 @@
+.DS_Store
+/examples/example_out_CLI
+/__pycache__
+/modules/__pycache__
+/modules/pdbx/__pycache__
+/modules/pdbx/reader/__pycache__
+*.pyc

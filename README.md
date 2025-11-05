@@ -52,6 +52,18 @@ conda env create -f envs/placer_env.yml
 conda activate placer_env
 ```
 
+### For Mac users
+
+Clone the forked repository for Apple Silicon:
+`git clone https://github.com/fnachon/PLACER.git`
+
+A specific conda environment is necessary for running PLACER on the gpu of Apple Silicon using mps. It is based on [SE3Transformer adapted for mps by YaoYingYing](https://github.com/YaoYinYing/SE3Transformer)<br>
+Create a new environment from `envs/placer_env_mac.yml`:
+```
+conda env create -f envs/placer_env_mac.yml
+
+conda activate placer
+```
 <a id="usage"></a>
 ## Usage
 

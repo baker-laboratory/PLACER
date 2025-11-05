@@ -35,7 +35,7 @@ class PLACER():
         Loads the model from checkpoint, and sets up methods for data loading and loss calculation
         Use PLACER().run( ... ) to run predictions.
         """
-        self.__device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+        self.__device = torch.device('mps' if torch.backends.mps.is_available() else 'cuda:0' if torch.cuda.is_available() else 'cpu')
         print('# device: ', self.__device)
         
         ########################################################
