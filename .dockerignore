@@ -1,0 +1,20 @@
+# Allow only the files needed by this build; exclude .git, audit logs, and outputs.
+**
+!Dockerfile
+!docker/
+!docker/conda-linux-64.lock
+!PLACER.py
+!run_PLACER.py
+!LICENSE
+!README.md
+!modules/
+!modules/**
+!data/
+!data/**
+!weights/
+!weights/**
+!examples/
+!examples/inputs/
+!examples/inputs/dnHEM1_apo.pdb
+**/__pycache__/
+**/*.pyc

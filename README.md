@@ -52,9 +52,17 @@ conda env create -f envs/placer_env.yml
 conda activate placer_env
 ```
 
+### Linux / NVIDIA container
+
+For Linux x86_64 hosts with NVIDIA GPUs, or Windows x86_64 using Docker Desktop
+with WSL2/Linux containers, see the [container instructions](docker/README.md).
+This CUDA 12.1 image includes the checkpoint and chemical resources. Native
+Windows containers, macOS/ARM64, and non-CUDA GPUs are outside its supported scope.
+The container workflow is separate from the native Conda setup.
+
 ### For Mac users
 
-A specific conda environment is necessary for running PLACER on the gpu of Apple Silicon using mps. It is based on [SE3Transformer adapted for mps by YaoYingYing](https://github.com/YaoYinYing/SE3Transformer)<br>
+The native macOS environment below uses the MPS backend and is separate from the Linux/NVIDIA container workflow. It is based on [SE3Transformer adapted for mps by YaoYingYing](https://github.com/YaoYinYing/SE3Transformer)<br>
 Create a new environment from `envs/placer_env_mac.yml`:
 ```
 conda env create -f envs/placer_env_mac.yml
